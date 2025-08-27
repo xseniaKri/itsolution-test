@@ -1,0 +1,17 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>5 самых популярных цитат</h1>
+
+    {% if top_5_quotes %}
+    <ol class="list-group list-group-numbered">
+
+      {% for quote in top_5_quotes %}
+      <li class="list-group-item">{{ quote.text }} - {{quote.source.name}} | <i class="bi bi-hand-thumbs-up"></i> {{quote.likes_count}}</li>
+      {% endfor %}
+
+    </ol>
+    {% else %}
+      <p>There are no books in the library.</p>
+    {% endif %}
+{% endblock %}

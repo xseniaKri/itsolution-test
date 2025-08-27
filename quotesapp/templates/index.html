@@ -1,0 +1,25 @@
+{% extends "base_generic.html" %}
+
+{% block title %}Случайная цитата{% endblock %}
+
+{% block content %}
+<div class="quote-block text-center">
+    <blockquote class="blockquote text-center">
+        <p class="mb-3">{{ text }}</p>
+        <footer class="blockquote-footer">
+            {{ source }}
+        </footer>
+    </blockquote>
+
+    <p class="text-muted text-center">Просмотров: {{ views }}</p>
+
+    <div class="d-flex justify-content-center gap-3">
+            <button type="submit" class="btn btn-success">
+                <i class="bi bi-hand-thumbs-up"></i> ({{ likes }})
+            </button>
+            <button type="submit" class="btn btn-danger">
+                <i class="bi bi-hand-thumbs-down"></i> ({{ dislikes }})
+            </button>
+    </div>
+</div>
+{% endblock %}
