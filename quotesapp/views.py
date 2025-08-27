@@ -2,11 +2,11 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic
 from django.db.models import Count, Q
-from .models import Quote, Vote
+from .models import Quote, Vote, Source
 from django.http import JsonResponse
 import random
 from django.contrib.auth import login
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, QuoteForm
 
 def register(request):
     if request.method == "POST":
@@ -20,9 +20,25 @@ def register(request):
     return render(request, "registration/register.html", {"form": form})
 
 @login_required
+def add_quote(request):
+    if request.method == "POST":
+        form = QuoteForm(request.POST)
+        if form.is_valid():
+            quote = form.save(commit=False)
+            quote.source = form.cleaned_data['source_instance']
+            quote.creator = request.user
+            quote.save()
+            return redirect('index')
+    else:
+        form = QuoteForm()
+    return render(request, "add_quote.html", {"form": form})
+
+
+@login_required
 def profile(request):
     user = request.user
-    return render(request, "registration/profile.html", {"user": user})
+    quotes_list = list(user.quotes.all())
+    return render(request, "registration/profile.html", {"user": user, "quotes_list": quotes_list})
 
 @login_required
 def vote(request, quote_id, value):
@@ -80,4 +96,3 @@ class PopularListView(generic.ListView):
         return Quote.objects.annotate(
             likes_total=Count('votes', filter=Q(votes__value=1))
         ).order_by('-likes_total')[:5]
-

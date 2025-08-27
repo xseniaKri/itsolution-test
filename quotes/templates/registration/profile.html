@@ -7,6 +7,19 @@
     <li class="list-group-item"><strong>Email:</strong> {{ user.email }}</li>
   </ul>
 
+    {% if quotes_list %}
+    <h3>Цитаты, добавленные вами:</h3>
+    <ol class="list-group list-group-numbered">
+
+      {% for quote in quotes_list %}
+      <li class="list-group-item">{{ quote.text }} - {{quote.source.name}} | <i class="bi bi-hand-thumbs-up"></i> {{quote.likes_count}}</li>
+      {% endfor %}
+
+    </ol>
+    {% else %}
+      <p>Вы пока не добавили ни одной цитаты</p>
+    {% endif %}
+
     <form method="post" action="{% url 'logout' %}">
     {% csrf_token %}
     <button type="submit" class="btn btn-danger mt-3">Выйти</button>

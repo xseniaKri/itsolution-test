@@ -13,7 +13,7 @@ class Source(models.Model):
 
 class Quote(models.Model):
     source = models.ForeignKey(Source, on_delete=models.CASCADE, related_name="quotes")
-    text = models.CharField(max_length=255, help_text="Введите цитату (Быть или не быть - вот, в чем вопрос)")
+    text = models.CharField(max_length=255, help_text="Введите цитату (Быть или не быть - вот, в чем вопрос)", unique=True)
     weight = models.PositiveIntegerField(default=1, help_text="Введите вес цитаты (от 1 до 10)")
     views = models.PositiveIntegerField(default=0)
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="quotes")
