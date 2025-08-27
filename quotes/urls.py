@@ -19,10 +19,15 @@ from django.urls import path, include
 from django.views.generic import RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth import urls
+from quotesapp.views import register, profile
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('quotesapp/', include('quotesapp.urls')),
     path('', RedirectView.as_view(url='/quotesapp/', permanent=True)),
+    path('accounts/', include(urls)),
+    path("accounts/register/", register, name="register"),
+    path('accounts/profile/', profile, name="profile"),
 ] +  static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

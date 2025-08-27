@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Профиль</h2>
+  <ul class="list-group">
+    <li class="list-group-item"><strong>Имя пользователя:</strong> {{ user.username }}</li>
+    <li class="list-group-item"><strong>Email:</strong> {{ user.email }}</li>
+  </ul>
+
+    <form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger mt-3">Выйти</button>
+  </form>
+
+</div>
+{% endblock %}

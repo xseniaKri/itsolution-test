@@ -1,9 +1,6 @@
 from django.contrib import admin
-from .models import User, Quote, Source, Vote
+from .models import Quote, Source, Vote
 
-@admin.register(User)
-class UserAdmin(admin.ModelAdmin):
-    list_display = ('nickname', 'email', 'password')
 
 @admin.register(Quote)
 class QuoteAdmin(admin.ModelAdmin):
