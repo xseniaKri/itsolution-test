@@ -8,30 +8,63 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('quotesapp', '0002_alter_vote_user_alter_quote_creator_delete_user'),
+        ("quotesapp", "0002_alter_vote_user_alter_quote_creator_delete_user"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='quote',
-            name='text',
-            field=models.CharField(help_text='Введите цитату (напр. Быть или не быть - вот, в чем вопрос)', max_length=255, unique=True),
+            model_name="quote",
+            name="text",
+            field=models.CharField(
+                help_text="Введите цитату (напр. Быть или не быть - вот, в чем вопрос)",
+                max_length=255,
+                unique=True,
+            ),
         ),
         migrations.AlterField(
-            model_name='source',
-            name='name',
-            field=models.CharField(help_text='Введите название источника (напр. Властелин колец)', max_length=255),
+            model_name="source",
+            name="name",
+            field=models.CharField(
+                help_text="Введите название источника (напр. Властелин колец)",
+                max_length=255,
+            ),
         ),
         migrations.CreateModel(
-            name='Favourites',
+            name="Favourites",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='favourites', to=settings.AUTH_USER_MODEL)),
-                ('quote', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='liked_by', to='quotesapp.quote')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "owner",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="favourites",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "quote",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="liked_by",
+                        to="quotesapp.quote",
+                    ),
+                ),
             ],
             options={
-                'constraints': [models.UniqueConstraint(fields=('quote', 'owner'), name='unique_quotes_owner')],
+                "constraints": [
+                    models.UniqueConstraint(
+                        fields=("quote", "owner"), name="unique_quotes_owner"
+                    )
+                ],
             },
         ),
     ]

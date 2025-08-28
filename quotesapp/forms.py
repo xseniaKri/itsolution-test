@@ -1,13 +1,13 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .views import Quote, Source
+
+from .models import Source, Quote
 
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(
-        required=True,
-        widget=forms.EmailInput(attrs={"class": "form-control"})
+        required=True, widget=forms.EmailInput(attrs={"class": "form-control"})
     )
 
     class Meta:
@@ -27,16 +27,13 @@ class QuoteForm(forms.ModelForm):
         label="Вес цитаты",
         min_value=1,
         max_value=10,
-        widget=forms.NumberInput(attrs={'type': 'range', 'class': 'form-range'})
+        widget=forms.NumberInput(attrs={"type": "range", "class": "form-range"}),
     )
 
     class Meta:
         model = Quote
-        fields = ['text', 'weight']
-        labels = {
-            'text': 'Текст цитаты',
-            'weight': 'Вес цитаты (вероятность выдачи)'
-        }
+        fields = ["text", "weight"]
+        labels = {"text": "Текст цитаты", "weight": "Вес цитаты (вероятность выдачи)"}
 
     def clean(self):
         cleaned_data = super().clean()
@@ -50,12 +47,13 @@ class QuoteForm(forms.ModelForm):
             raise forms.ValidationError("Такая цитата уже есть на сайте.")
 
         if Quote.objects.filter(source=source, text=text).exists():
-            raise forms.ValidationError("Такая цитата уже существует для этого источника.")
+            raise forms.ValidationError(
+                "Такая цитата уже существует для этого источника."
+            )
 
         if Quote.objects.filter(source=source).count() >= 3:
             raise forms.ValidationError("У этого источника уже есть 3 цитаты.")
 
-        self.cleaned_data['source_instance'] = source
+        self.cleaned_data["source_instance"] = source
 
         return cleaned_data
-

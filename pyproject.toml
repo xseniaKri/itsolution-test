@@ -10,6 +10,31 @@ python = "^3.12"
 django = "^5.2.5"
 
 
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.12.10"
+isort = "^6.0.0"
+black = "^24.0.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+select = ["E", "F", "I"]
+line-length = 88
+extend-ignore = ["E203"]
+exclude = [
+    "migrations",
+    ".venv",
+    "__pycache__",
+]
+
+[tool.isort]
+profile = "black"
+line_length = 88
+known_first_party = ["quotesapp"]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+skip = ["migrations"]

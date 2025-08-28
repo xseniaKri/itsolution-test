@@ -8,51 +8,152 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='User',
+            name="User",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nickname', models.CharField(help_text='Введите логин (Xsenia)', max_length=25)),
-                ('password', models.BinaryField()),
-                ('email', models.EmailField(help_text='Введите почту (example@mail.ru)', max_length=254)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "nickname",
+                    models.CharField(help_text="Введите логин (Xsenia)", max_length=25),
+                ),
+                ("password", models.BinaryField()),
+                (
+                    "email",
+                    models.EmailField(
+                        help_text="Введите почту (example@mail.ru)", max_length=254
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Source',
+            name="Source",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('category', models.CharField(help_text='Введите категорию (книга, фильм и т. д.)', max_length=255)),
-                ('name', models.CharField(help_text='Введите название источника (Властелин колец)', max_length=255)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "category",
+                    models.CharField(
+                        help_text="Введите категорию (книга, фильм и т. д.)",
+                        max_length=255,
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        help_text="Введите название источника (Властелин колец)",
+                        max_length=255,
+                    ),
+                ),
             ],
             options={
-                'constraints': [models.UniqueConstraint(fields=('category', 'name'), name='unique_category_name')],
+                "constraints": [
+                    models.UniqueConstraint(
+                        fields=("category", "name"), name="unique_category_name"
+                    )
+                ],
             },
         ),
         migrations.CreateModel(
-            name='Quote',
+            name="Quote",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('text', models.CharField(help_text='Введите цитату (Быть или не быть - вот, в чем вопрос)', max_length=255)),
-                ('weight', models.PositiveIntegerField(default=1, help_text='Введите вес цитаты (от 1 до 10)')),
-                ('views', models.PositiveIntegerField(default=0)),
-                ('source', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='quotes', to='quotesapp.source')),
-                ('creator', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='quotes', to='quotesapp.user')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "text",
+                    models.CharField(
+                        help_text="Введите цитату (Быть или не быть - вот, в чем вопрос)",
+                        max_length=255,
+                    ),
+                ),
+                (
+                    "weight",
+                    models.PositiveIntegerField(
+                        default=1, help_text="Введите вес цитаты (от 1 до 10)"
+                    ),
+                ),
+                ("views", models.PositiveIntegerField(default=0)),
+                (
+                    "source",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="quotes",
+                        to="quotesapp.source",
+                    ),
+                ),
+                (
+                    "creator",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="quotes",
+                        to="quotesapp.user",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Vote',
+            name="Vote",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('value', models.SmallIntegerField(choices=[(-1, 'Dislike'), (1, 'Like')])),
-                ('quote', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='votes', to='quotesapp.quote')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='votes', to='quotesapp.user')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "value",
+                    models.SmallIntegerField(choices=[(-1, "Dislike"), (1, "Like")]),
+                ),
+                (
+                    "quote",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="votes",
+                        to="quotesapp.quote",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="votes",
+                        to="quotesapp.user",
+                    ),
+                ),
             ],
             options={
-                'constraints': [models.UniqueConstraint(fields=('quote', 'user'), name='unique_quote_user')],
+                "constraints": [
+                    models.UniqueConstraint(
+                        fields=("quote", "user"), name="unique_quote_user"
+                    )
+                ],
             },
         ),
     ]
