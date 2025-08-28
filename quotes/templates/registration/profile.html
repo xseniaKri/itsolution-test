@@ -20,6 +20,19 @@
       <p>Вы пока не добавили ни одной цитаты</p>
     {% endif %}
 
+    {% if fav_quotes %}
+    <h3>Избранные цитаты:</h3>
+    <ol class="list-group list-group-numbered">
+
+      {% for quote in fav_quotes %}
+      <li class="list-group-item">{{ quote.text }} - {{quote.source.name}} | <i class="bi bi-hand-thumbs-up"></i> {{quote.likes_count}}</li>
+      {% endfor %}
+
+    </ol>
+    {% else %}
+      <p>Вы пока не добавили ни одной цитаты в избранное</p>
+    {% endif %}
+
     <form method="post" action="{% url 'logout' %}">
     {% csrf_token %}
     <button type="submit" class="btn btn-danger mt-3">Выйти</button>

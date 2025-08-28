@@ -7,8 +7,19 @@
 
 <form method="post">
     {% csrf_token %}
-    {{ form.text.label_tag }}
-    {{ form.text }}
+
+    {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+            {% for error in form.non_field_errors %}
+                <div>{{ error }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="mb-3">
+        {{ form.text.label_tag }}
+        {{ form.text }}
+    </div>
 
     <div class="mb-3">
         {{ form.source_category.label_tag }}
@@ -18,18 +29,33 @@
     <div class="mb-3">
         {{ form.source_name.label_tag }}
         {{ form.source_name }}
+        {% if form.source_name.errors %}
+            <div class="text-danger">
+                {% for error in form.source_name.errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
 
     <div class="mb-3">
         {{ form.weight.label_tag }}
         {{ form.weight }}
         <span id="weightValue" class="ms-2">{{ form.weight.value|default:5 }}</span>
+        {% if form.weight.errors %}
+            <div class="text-danger">
+                {% for error in form.weight.errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
 
     <div class="text-center">
         <button type="submit" class="btn btn-primary">Добавить цитату</button>
     </div>
 </form>
+
 
 <script>
 const weightInput = document.querySelector('input[name="weight"]');

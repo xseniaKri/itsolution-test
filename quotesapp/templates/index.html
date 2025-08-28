@@ -3,36 +3,51 @@
 {% block title %}Случайная цитата{% endblock %}
 
 {% block content %}
-<div class="quote-block text-center">
-    <blockquote class="blockquote text-center">
-        <p class="mb-3">{{ text }}</p>
-        <footer class="blockquote-footer">
-            {{ source }}
-        </footer>
-    </blockquote>
+{% if quote %}
+    <div class="quote-block text-center">
+        <blockquote class="blockquote text-center">
+            <p class="mb-3">{{ text }}</p>
+            <footer class="blockquote-footer">
+                {{ source }}
+            </footer>
+        </blockquote>
 
-    <p class="text-muted text-center">Просмотров: {{ views }}</p>
+        <p class="text-muted text-center">Просмотров: {{ views }}</p>
 
-    <div class="d-flex justify-content-center gap-3">
-    {% if user.is_authenticated %}
-        <meta name="csrf-token" content="{{ csrf_token }}">
-        <button type="button" class="btn btn-success vote-btn" data-quote-id="{{ quote.id }}" data-value="1">
-            <i class="bi bi-hand-thumbs-up"></i> (<span class="likes-count">{{ likes }}</span>)
-        </button>
-        <button type="button" class="btn btn-danger vote-btn" data-quote-id="{{ quote.id }}" data-value="-1">
-            <i class="bi bi-hand-thumbs-down"></i> (<span class="dislikes-count">{{ dislikes }}</span>)
-        </button>
-    {% else %}
-        <button type="button" class="btn btn-success" onclick="alert('Сначала войдите или зарегистрируйтесь')">
-            <i class="bi bi-hand-thumbs-up"></i> (<span>{{ likes }}</span>)
-        </button>
-        <button type="button" class="btn btn-danger" onclick="alert('Сначала войдите или зарегистрируйтесь')">
-            <i class="bi bi-hand-thumbs-down"></i> (<span>{{ dislikes }}</span>)
-        </button>
-    {% endif %}
+        <div class="d-flex justify-content-center gap-3">
+        {% if user.is_authenticated %}
+            <meta name="csrf-token" content="{{ csrf_token }}">
+            <button type="button" class="btn btn-success vote-btn" data-quote-id="{{ quote.id }}" data-value="1">
+                <i class="bi bi-hand-thumbs-up"></i> (<span class="likes-count">{{ likes }}</span>)
+            </button>
+            <button type="button" class="btn btn-danger vote-btn" data-quote-id="{{ quote.id }}" data-value="-1">
+                <i class="bi bi-hand-thumbs-down"></i> (<span class="dislikes-count">{{ dislikes }}</span>)
+            </button>
+        {% else %}
+            <button type="button" class="btn btn-success" onclick="alert('Сначала войдите или зарегистрируйтесь')">
+                <i class="bi bi-hand-thumbs-up"></i> (<span>{{ likes }}</span>)
+            </button>
+            <button type="button" class="btn btn-danger" onclick="alert('Сначала войдите или зарегистрируйтесь')">
+                <i class="bi bi-hand-thumbs-down"></i> (<span>{{ dislikes }}</span>)
+            </button>
+        {% endif %}
+            <div class="quote">
+           <button class="btn btn-outline-warning btn-lg favorite-btn"
+            data-quote-id="{{ quote.id }}"
+            aria-label="Toggle favorite">
+                {% if user.is_authenticated and quote.liked_by.all %}
+                    <i class="bi bi-star-fill"></i>
+                {% else %}
+                     <i class="bi bi-star"></i>
+                {% endif %}
+            </button>
+        </div>
+        </div>
+
+        <p class="text-muted text-center">Цитату добавил пользователь с ником: {{ creator }}</p>
+
     </div>
-
-    <p class="text-muted text-center">Цитату добавил пользователь с ником: {{ creator }}</p>
-
-</div>
+{% else %}
+    <p class="text-center text-muted">Это сайт, созданный как тестовое задание для компании IT Solutions. На сайте пока что нет цитат.</p>
+{% endif %}
 {% endblock %}

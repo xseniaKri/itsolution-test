@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic
 from django.db.models import Count, Q
-from .models import Quote, Vote, Source
+from .models import Quote, Vote, Source, Favourites
 from django.http import JsonResponse
 import random
 from django.contrib.auth import login
@@ -18,6 +18,47 @@ def register(request):
     else:
         form = CustomUserCreationForm()
     return render(request, "registration/register.html", {"form": form})
+
+    if request.method == "POST" and request.headers.get("x-requested-with") == "XMLHttpRequest":
+        quote = get_object_or_404(Quote, id=int(quote_id))
+        value = int(value)
+
+        vote_obj, created = Vote.objects.get_or_create(
+            quote=quote,
+            user=request.user,
+            defaults={'value': value}
+        )
+
+        if not created:
+            vote_obj.value = value
+            vote_obj.save()
+
+        data = {
+            'likes': quote.likes_count(),
+            'dislikes': quote.dislikes_count()
+        }
+        return JsonResponse(data)
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+@login_required
+def add_favourite(request, quote_id):
+    if request.method == "POST" and request.headers.get("x-requested-with") == "XMLHttpRequest":
+        quote = get_object_or_404(Quote, id=int(quote_id))
+
+        favourite, created = Favourites.objects.get_or_create(
+            quote=quote,
+            owner=request.user,
+        )
+
+        if not created:
+            favourite.delete()
+            return JsonResponse({"favourite": False})
+
+        return JsonResponse({"favourite": True})
+
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
 
 @login_required
 def add_quote(request):
@@ -38,7 +79,9 @@ def add_quote(request):
 def profile(request):
     user = request.user
     quotes_list = list(user.quotes.all())
-    return render(request, "registration/profile.html", {"user": user, "quotes_list": quotes_list})
+    favs = list(user.favourites.all())
+    fav_quotes = [el.quote for el in favs]
+    return render(request, "registration/profile.html", {"user": user, "quotes_list": quotes_list, "fav_quotes": fav_quotes})
 
 @login_required
 def vote(request, quote_id, value):
@@ -69,23 +112,26 @@ def index(request):
 
     weights = [q.weight for q in quotes]
 
-    quote = random.choices(quotes, weights=weights, k=1)[0]
+    if quotes:
+        quote = random.choices(quotes, weights=weights, k=1)[0]
 
-    quote.views += 1
-    quote.save(update_fields=["views"])
+        quote.views += 1
+        quote.save(update_fields=["views"])
 
-    views = quote.views
-    text = quote.text
-    likes = quote.likes_count()
-    dislikes = quote.dislikes_count()
-    source = quote.source.category + " " + quote.source.name
-    creator = quote.creator.username
+        views = quote.views
+        text = quote.text
+        likes = quote.likes_count()
+        dislikes = quote.dislikes_count()
+        source = quote.source.category + " " + quote.source.name
+        creator = quote.creator.username
 
-    return render(
-        request,
-        'index.html',
-        context={'quote': quote, 'views': views, 'text': text, 'likes': likes, 'dislikes': dislikes, 'source': source, 'creator': creator},
-    )
+        return render(
+            request,
+            'index.html',
+            context={'quote': quote, 'views': views, 'text': text, 'likes': likes, 'dislikes': dislikes, 'source': source, 'creator': creator},
+        )
+    else:
+        return render(request, 'index.html', {'quotes': quotes})
 
 class PopularListView(generic.ListView):
     model = Quote

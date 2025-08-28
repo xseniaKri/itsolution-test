@@ -2906,6 +2906,16 @@ textarea.form-control-lg {
   --bs-btn-disabled-border-color: #e21e80;
 }
 
+.favorite-btn {
+    width: 100px;  /* пример ширины */
+    height: 38px; /* пример высоты, как у кнопок лайка/дизлайка */
+    font-size: 1.25rem; /* чтобы и иконка была крупнее */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
 .btn-success {
     font-size: 1.25rem;       /* размер текста внутри кнопки */
     padding: 0.75rem 1.5rem;  /* верх/низ и лев/прав */
@@ -3181,10 +3191,11 @@ textarea.form-control-lg {
 }
 
 .btn-lg, .btn-group-lg > .btn {
-  --bs-btn-padding-y: 0.5rem;
+  --bs-btn-padding-y: 1rem;
   --bs-btn-padding-x: 1rem;
   --bs-btn-font-size: 1.25rem;
   --bs-btn-border-radius: 0.5rem;
+  width: 100px;
 }
 
 .btn-sm, .btn-group-sm > .btn {

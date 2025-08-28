@@ -3,15 +3,14 @@
 {% block content %}
 
 {% if form.errors %}
-  <p>Your username and password didn't match. Please try again.</p>
+  <p>Неправильный ник или пароль. Пожалуйста, попробуйте еще раз.</p>
 {% endif %}
 
 {% if next %}
   {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
+    <p>Эта страница доступна только авторизованным пользователям. Пожалуйста, войдите или зарегистрируйтесь.</p>
   {% else %}
-    <p>Please login to see this page.</p>
+    <p>Войдите или зарегистрируйтесь для доступа к этой странице.</p>
   {% endif %}
 {% endif %}
 
@@ -33,7 +32,5 @@
 <input type="submit" value="Войти" />
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
-
-<p><a href="{% url 'password_reset' %}">Забыли пароль?</a></p>
 
 {% endblock %}

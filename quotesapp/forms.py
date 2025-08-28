@@ -33,6 +33,10 @@ class QuoteForm(forms.ModelForm):
     class Meta:
         model = Quote
         fields = ['text', 'weight']
+        labels = {
+            'text': 'Текст цитаты',
+            'weight': 'Вес цитаты (вероятность выдачи)'
+        }
 
     def clean(self):
         cleaned_data = super().clean()
@@ -41,6 +45,9 @@ class QuoteForm(forms.ModelForm):
         name = cleaned_data.get("source_name")
 
         source, created = Source.objects.get_or_create(category=category, name=name)
+
+        if Quote.objects.filter(text=text).exists():
+            raise forms.ValidationError("Такая цитата уже есть на сайте.")
 
         if Quote.objects.filter(source=source, text=text).exists():
             raise forms.ValidationError("Такая цитата уже существует для этого источника.")
