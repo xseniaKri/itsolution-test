@@ -24,9 +24,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-gwq@-7&vvlepc2*6$k#rn_%apfu*-3g(96(-j)a4fk7(e^$ig="
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["kripak.su"]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://kripak.su",
+]
 
 
 # Application definition
