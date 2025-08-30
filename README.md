@@ -22,6 +22,12 @@ QuotesApp - веб-приложение на Django, разработанное 
 ### Запуск локально
 
 ```bash
+# Установить зависимости:
+poetry install
+
+# Применить миграции:
+poetry run python manage.py migrate
+
 # Собрать образ:
 docker build -t quotesapp .
 
