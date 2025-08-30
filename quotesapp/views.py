@@ -138,4 +138,4 @@ class PopularListView(generic.ListView):
     def get_queryset(self):
         return Quote.objects.annotate(
             likes_total=Count("votes", filter=Q(votes__value=1))
-        ).order_by("-likes_total")[:5]
+        ).order_by("-likes_total")[:10]

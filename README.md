@@ -7,7 +7,7 @@ QuotesApp - веб-приложение на Django, разработанное 
 
 - Django
 - Poetry
-- JS
+- Docker
 
 ### Что умеет:
 - на главной странице показывается случайная цитата. Чем больше ее вес, заданный при добавлении, тем больше вероятность выдачи
@@ -22,14 +22,11 @@ QuotesApp - веб-приложение на Django, разработанное 
 ### Запуск локально
 
 ```bash
-# Установить зависимости:
-poetry install
-
-# Применить миграции:
-poetry run python manage.py migrate
+# Собрать образ:
+docker build -t quotesapp .
 
 # Запуск:
-poetry run python manage.py runserver
+docker run -d -p 8000:8000 --name quotesapp quotesapp
 ```
 ### Стиль кода
 При разработке использовались линтеры и автоформатеры ruff, isort, black. Код соответствует PEP8. 
