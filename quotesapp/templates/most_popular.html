@@ -1,7 +1,7 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-    <h1>5 самых популярных цитат</h1>
+    <h1>10 самых популярных цитат</h1>
 
     {% if top_5_quotes %}
     <ol class="list-group list-group-numbered">
@@ -12,6 +12,6 @@
 
     </ol>
     {% else %}
-      <p>There are no books in the library.</p>
+      <p>На сайте пока нет ни одной цитаты.</p>
     {% endif %}
 {% endblock %}
